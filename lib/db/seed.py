@@ -222,8 +222,17 @@ def seed_authentic_egyptian_plates():
     add_food("Kawarrah", "Main", "Authentic Egyptian Plates", "Buffalo trotters slow cooked and served on a bed of vermicelli rice, topped with fried bread pieces, garlic sauce & soup.", 29.0)
     add_food("Koshari", "Main", "Authentic Egyptian Plates", "Egypt’s popular street food. Layers of black lentils, medium grain rice, macaroni pasta, chickpeas, fried onions, salsa & a special dukkah dressing.", 24.0)
 
+def seed_grill_items():
+    # From the Grill
+    add_food("Cairo King Grill", "Main", "From the Grill", "Selection of three dips to share, 2 Lamb Kebabs, 2 Kofta Skewers, 2 Chicken Kebabs, 2 Chicken Wings, 1 Quail (cut in half), served with a side of our Cairo rice & Salata Baladi. Suitable for 2 people.", 99.0)
+    add_food("Mix Grill", "Main", "From the Grill", "1 lamb kofta, 1 lamb kebab, 1 chicken kebab served with a garlic & hummus dip, served with a side of our Cairo rice & Salata Baladi.", 38.0)
+    add_food("BBQ Quails", "Main", "From the Grill", "2 large quail marinated and grilled served with a side of our Cairo rice, Salata Baladi & garlic dip.", 34.0)
+    add_food("Lamb Shish Kebab", "Main", "From the Grill", "2 marinated lamb tenderloin served with a side of Cairo rice, hummus dip & Salata Baladi.", 34.0)
+    add_food("Lamb Kofta", "Main", "From the Grill", "2 low fat lamb mince skewers served with a side of our Cairo rice, hummus dip & Salata Baladi.", 32.0)
+    add_food("Chicken Shish Kebab", "Main", "From the Grill", "2 large skewers of thigh fillets served with a side of Cairo rice, garlic dip & Salata Baladi.", 32.0)
+
 
 if __name__ == "__main__":
-    seed_authentic_egyptian_plates()
+    seed_grill_items()
     print("Entrees seeding completed.")
     session.close()
