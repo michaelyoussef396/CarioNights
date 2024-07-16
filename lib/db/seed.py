@@ -202,7 +202,19 @@ def seed_entrees():
     add_food("Greek Salad", "Entree", "Salads", "Lettuce, feta cheese, olives, tomato & capsicum.", 18.0)
     add_food("Salata Baladi", "Entree", "Salads", "Tomato, cucumber, onion, lettuce with lemon & olive oil dressing.", 11.0)
 
+def seed_main_claypots():
+    # Egyptian Style Claypots
+    add_food("Tagen Super Sayadia", "Main", "Egyptian Style Claypots", "Barramundi fish fillet, calamari, prawn, tomato puree & capsicum baked in an Egyptian style claypot served on a bed of Sayadia rice.", 38.0)
+    add_food("Tagen Sayadia", "Main", "Egyptian Style Claypots", "Barramundi fish fillet baked with spicy tomato & capsicum sauce baked in an Egyptian style claypot served on a bed of Sayadia rice.", 32.0)
+    add_food("Tagen Lamb Roz Moammar", "Main", "Egyptian Style Claypots", "Rice cooked in an Egyptian style claypot with lamb fillet pieces, onions & cream.", 29.0)
+    add_food("Tagen Prawn Roz Moammar", "Main", "Egyptian Style Claypots", "Rice cooked in an Egyptian style claypot with prawn, garlic, onions & cream.", 29.0)
+    add_food("Tagen Calamari Iskandarani", "Main", "Egyptian Style Claypots", "Spicy Calamari baked in tomato puree in an Egyptian style claypot, served with bread, The Alexandrian way!", 28.0)
+    add_food("Tagen Bamia", "Main", "Egyptian Style Claypots", "Egyptian Bamia (Okra) is a stew with lamb, cooked in an Egyptian style claypot.", 28.0)
+    add_food("Tagen Macarona Bechamel", "Main", "Egyptian Style Claypots", "Penne pasta with mince beef covered with bechamel sauce cooked in an Egyptian style claypot.", 26.0)
+    add_food("Tagen Moussaka", "Main", "Egyptian Style Claypots", "Eggplant with beef mince and tomato puree topped with bechamel sauce, cooked in an Egyptian style claypot.", 26.0)
+    add_food("Tagen Moussaka Falahi", "Main", "Egyptian Style Claypots", "Eggplant baked in tomato puree with capsicum slices & chilli served with our homemade bread.", 24.0)
+
 if __name__ == "__main__":
-    seed_entrees()
+    seed_main_claypots()
     print("Entrees seeding completed.")
     session.close()
