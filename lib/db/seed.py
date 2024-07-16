@@ -214,7 +214,16 @@ def seed_main_claypots():
     add_food("Tagen Moussaka", "Main", "Egyptian Style Claypots", "Eggplant with beef mince and tomato puree topped with bechamel sauce, cooked in an Egyptian style claypot.", 26.0)
     add_food("Tagen Moussaka Falahi", "Main", "Egyptian Style Claypots", "Eggplant baked in tomato puree with capsicum slices & chilli served with our homemade bread.", 24.0)
 
+def seed_authentic_egyptian_plates():
+    # Authentic Egyptian Plates
+    add_food("Lamb Shank Fattah", "Main", "Authentic Egyptian Plates", "Lamb shank served on a bed of rice cooked with angel hair pasta, topped with fried bread pieces & special garlic vinegar sauce.", 39.0)
+    add_food("Samakmak", "Main", "Authentic Egyptian Plates", "Chef Tharwat’s Special Fish Dish. Singari Style baked barramundi fillet with onions, capsicum & special spices.", 36.0)
+    add_food("Molokhia with Chicken", "Main", "Authentic Egyptian Plates", "Egyptian jute stew served in a bowl with a side of grilled half chicken & vermicelli rice.", 29.0)
+    add_food("Kawarrah", "Main", "Authentic Egyptian Plates", "Buffalo trotters slow cooked and served on a bed of vermicelli rice, topped with fried bread pieces, garlic sauce & soup.", 29.0)
+    add_food("Koshari", "Main", "Authentic Egyptian Plates", "Egypt’s popular street food. Layers of black lentils, medium grain rice, macaroni pasta, chickpeas, fried onions, salsa & a special dukkah dressing.", 24.0)
+
+
 if __name__ == "__main__":
-    seed_main_claypots()
+    seed_authentic_egyptian_plates()
     print("Entrees seeding completed.")
     session.close()
