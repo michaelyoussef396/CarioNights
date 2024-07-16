@@ -231,8 +231,15 @@ def seed_grill_items():
     add_food("Lamb Kofta", "Main", "From the Grill", "2 low fat lamb mince skewers served with a side of our Cairo rice, hummus dip & Salata Baladi.", 32.0)
     add_food("Chicken Shish Kebab", "Main", "From the Grill", "2 large skewers of thigh fillets served with a side of Cairo rice, garlic dip & Salata Baladi.", 32.0)
 
+def seed_kids_menu():
+    # Kids Menu
+    add_food("Lamb Kofta & Chips", "Main", "Kids Menu", "1 skewer of lamb kofta served with a side of chips & tomato sauce.", 19.0)
+    add_food("Chicken & Chips", "Main", "Kids Menu", "1 skewer of thigh fillet served with a side of hot chips & tomato sauce.", 19.0)
+    add_food("Fish & Chips", "Main", "Kids Menu", "Fried fish fillet served with side of hot chips & tomato sauce.", 19.0)
+    add_food("Kids Pasta", "Main", "Kids Menu", "Pasta served with your choice of tomato sauce or bolognese.", 19.0)
+    add_food("Bowl of Chips", "Main", "Kids Menu", "A bowl of hot chips with tomato sauce.", 14.0)
 
 if __name__ == "__main__":
-    seed_grill_items()
+    seed_kids_menu()
     print("Entrees seeding completed.")
     session.close()
