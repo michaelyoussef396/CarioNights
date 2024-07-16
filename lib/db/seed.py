@@ -129,7 +129,31 @@ def seed_bws_drinks():
     for spirit_name, description, price_shot, price_bottle in spirits:
         add_drink(spirit_name, "BWS", "Spirits", description, price_shot, price_bottle)
 
+def seed_special_drinks():
+    # Mocktails
+    add_drink("Mango Mojito", "Special Drinks", "Mocktails", "A delicious layered drink of mango juice with lime and fresh mint.", 14.0)
+    add_drink("Egyptian Lemon Mint", "Special Drinks", "Mocktails", "Egyptian blend of fresh mint and lemon mint tea.", 14.0)
+    add_drink("Nectarine’s Dream", "Special Drinks", "Mocktails", "A delicious blend of nectarine, pineapple juice, aloe vera juice, and tropical flavors.", 15.0)
+    
+    # Cocktails
+    add_drink("Toblerone", "Special Drinks", "Cocktails", "Creamy cocktail containing Baileys, Frangelico, Kahlua and fresh cream.", 22.0)
+    add_drink("Fruit Tingle", "Special Drinks", "Cocktails", "Sweet & exotic, this cocktail contains vodka, blue curacao, raspberry & lemonade.", 19.0)
+    add_drink("Pina Colada", "Special Drinks", "Cocktails", "A delicious pina colada mix with coconut cream, pineapple juice & Malibu.", 19.0)
+    add_drink("Cosmopolitan", "Special Drinks", "Cocktails", "Classy cocktail containing vodka, Cointreau, lime juice, and cranberry juice.", 19.0)
+    add_drink("Espresso Martini", "Special Drinks", "Cocktails", "For the coffee hit, this must-try contains vodka, Kahlua, and espresso.", 19.0)
+    add_drink("Vodka Red Bull or Jager Red Bull", "Special Drinks", "Cocktails", "Vodka or Jager mixed with Red Bull for a tasty boost.", 18.0)
+    add_drink("Vodka Sunrise or Tequila Sunrise", "Special Drinks", "Cocktails", "Vodka or tequila mixed with orange juice, slightly grenadine.", 18.0)
+    add_drink("Nectarine’s Dream with Tequila or Vodka", "Special Drinks", "Cocktails", "Nectarine’s Dream with a dash of tequila or vodka for a summer twist.", 18.0)
+    
+    # Specialty Cocktails
+    add_drink("Summer in Cairo", "Special Drinks", "Specialty Cocktails", "A refreshing cocktail with rum, coconut milk, pineapple juice, and strawberries.", 24.0)
+    add_drink("Cleopatra’s Kiss", "Special Drinks", "Specialty Cocktails", "A delightful blend of champagne, strawberry liqueur, and strawberries.", 24.0)
+    add_drink("Pharaoh's Poison", "Special Drinks", "Specialty Cocktails", "A unique cocktail with banana liqueur, passion fruit liqueur, and tropical fruit.", 24.0)
+    add_drink("Tahitian Dream", "Special Drinks", "Specialty Cocktails", "A tropical mix with coconut rum, pineapple juice, and passion fruit liqueur.", 24.0)
+    add_drink("Blue Lagoon", "Special Drinks", "Specialty Cocktails", "A vibrant blue cocktail with vodka, blue curacao, and lemonade.", 24.0)
+
+
 if __name__ == "__main__":
-    seed_bws_drinks()
-    print("Seeding completed.")
+    seed_special_drinks()
+    print("Special drinks seeding completed.")
     session.close()
