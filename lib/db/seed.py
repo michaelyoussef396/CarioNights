@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Drink
+from models import Base, Drink, Food
 
 # Database setup
 DATABASE_URL = "sqlite:///cario_nights.db"
@@ -24,6 +24,21 @@ def add_drink(name, main_category, sub_category=None, description=None, price_gl
         session.commit()
     else:
         print(f"Drink {name} already exists. Skipping.")
+
+def add_food(name, main_category, sub_category=None, description=None, price=None):
+    existing_food = session.query(Food).filter_by(name=name).first()
+    if existing_food is None:
+        food = Food(
+            name=name, 
+            main_category=main_category, 
+            sub_category=sub_category, 
+            description=description, 
+            price=price
+        )
+        session.add(food)
+        session.commit()
+    else:
+        print(f"Food {name} already exists. Skipping.")
 
 def seed_cold_drinks():
     # Juices
@@ -152,8 +167,42 @@ def seed_special_drinks():
     add_drink("Tahitian Dream", "Special Drinks", "Specialty Cocktails", "A tropical mix with coconut rum, pineapple juice, and passion fruit liqueur.", 24.0)
     add_drink("Blue Lagoon", "Special Drinks", "Specialty Cocktails", "A vibrant blue cocktail with vodka, blue curacao, and lemonade.", 24.0)
 
+def seed_entrees():
+    # From the Egypt
+    add_food("Kebda Iskandarani", "Entree", "From the Egypt", "Veal liver marinated and pan tossed with chilli, garlic & Chef Thawat’s special spices, served with a side of Tahini & our bread.", 24.0)
+    add_food("Egyptian Waraq Enab", "Entree", "From the Egypt", "Vines leaves stuffed with rice, herbs & mince meat.", 24.0)
+    add_food("Hawawshi", "Entree", "From the Egypt", "Spiced minced meat cooked in the oven in flat baladi bread with onions, capsicum & chilli.", 19.0)
+    add_food("Mombar", "Entree", "From the Egypt", "3 pieces sausage skin stuffed with special spicy rice, tomato, onions & herbs.", 19.0)
+    add_food("Dukkah Lamb Brain", "Entree", "From the Egypt", "Lamb brain coated with dukkah cooked in breadcrumbs.", 19.0)
+    
+    # From the Sea
+    add_food("Calamari", "Entree", "From the Sea", "Fried calamari with aioli.", 24.0)
+    
+    # From the Middle-East
+    add_food("Chicken Wings", "Entree", "From the Middle-East", "Marinated & grilled chicken wings served with a gel dip.", 18.0)
+    add_food("Kobeba", "Entree", "From the Middle-East", "3 pieces of ground meat with bulgur wheat, stuffed with spices, pine nuts & onions.", 18.0)
+    add_food("Lamb Sambousek", "Entree", "From the Middle-East", "Pastry stuffed with lamb mince, onions & spices.", 15.0)
+    add_food("Cheese Sambousek", "Entree", "From the Middle-East", "Pastry stuffed with fetta cheese & herbs.", 15.0)
+    add_food("Molokhia Soup", "Entree", "From the Middle-East", "Egyptian stew served with our bread.", 14.0)
+    add_food("Lentil Soup", "Entree", "From the Middle-East", "Served with our bread.", 14.0)
+
+    # Dips
+    add_food("Feta Cheese Dip", "Entree", "Dips", "Mixed cheese with olives & spices.", 12.0)
+    add_food("Garlic Dip", "Entree", "Dips", "Crushed garlic puree with oil & lemon.", 12.0)
+    add_food("Tzatziki", "Entree", "Dips", "Yoghurt with cucumber & mint.", 12.0)
+    add_food("Pet Pet", "Entree", "Dips", "Chilli dip.", 12.0)
+    add_food("Baba Ghanoush", "Entree", "Dips", "Grilled eggplant, tahini & garlic.", 12.0)
+    add_food("Tourshi", "Entree", "Dips", "Homemade mixed pickles.", 11.0)
+    add_food("Bread Basket", "Entree", "Dips", "3 pieces of our homemade bread.", 6.0)
+    
+    # Salads
+    add_food("Lamb Tenderloin Salad", "Entree", "Salads", "Grilled lamb tenderloins on a bed of salad leaves & Egyptian dukkah.", 28.0)
+    add_food("Prawn Salad", "Entree", "Salads", "Lemon & olive oil dressing.", 26.0)
+    add_food("Chicken Salad", "Entree", "Salads", "Marinated grilled chicken on a bed of salad leaves with special Egyptian style dressing.", 18.0)
+    add_food("Greek Salad", "Entree", "Salads", "Lettuce, feta cheese, olives, tomato & capsicum.", 18.0)
+    add_food("Salata Baladi", "Entree", "Salads", "Tomato, cucumber, onion, lettuce with lemon & olive oil dressing.", 11.0)
 
 if __name__ == "__main__":
-    seed_special_drinks()
-    print("Special drinks seeding completed.")
+    seed_entrees()
+    print("Entrees seeding completed.")
     session.close()
