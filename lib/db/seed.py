@@ -39,7 +39,6 @@ def add_food(name, main_category, sub_category=None, description=None, price=Non
         session.commit()
     else:
         print(f"Food {name} already exists. Skipping.")
-
 def seed_cold_drinks():
     # Juices
     add_drink("Mango Juice", "Cold Drinks", "Juices", "A refreshing tropical drink made from ripe mangoes.", 10.0)
@@ -239,7 +238,20 @@ def seed_kids_menu():
     add_food("Kids Pasta", "Main", "Kids Menu", "Pasta served with your choice of tomato sauce or bolognese.", 19.0)
     add_food("Bowl of Chips", "Main", "Kids Menu", "A bowl of hot chips with tomato sauce.", 14.0)
 
+def seed_desserts():
+    # Desserts
+    add_food("Om Ali (Mother of Ali) - Small", "Desserts", None, "A traditional Egyptian croissant pudding, small size.", 14.0)
+    add_food("Om Ali (Mother of Ali) - Medium", "Desserts", None, "A traditional Egyptian croissant pudding, medium size.", 18.0)
+    add_food("Om Ali (Mother of Ali) - Large", "Desserts", None, "A traditional Egyptian croissant pudding, large size.", 26.0)
+    add_food("Om Ali (Mother of Ali) - Family", "Desserts", None, "A traditional Egyptian croissant pudding, family size.", 36.0)
+    add_food("Konafa with Mango", "Desserts", None, "Angel hair pastry served with mango pieces, cream & ice cream.", 14.0)
+    add_food("Roz bel Laban With Mango", "Desserts", None, "Traditional style sweet rice pudding with mango.", 14.0)
+    add_food("Roz bel Laban", "Desserts", None, "Traditional style sweet rice pudding topped with pistachio, cinnamon powder & sultanas.", 12.0)
+    add_food("Baklava - 1 Piece", "Desserts", None, "Middle Eastern sweets.", 4.0)
+    add_food("Baklava - 3 Pieces", "Desserts", None, "Middle Eastern sweets.", 11.0)
+    add_food("Ice-Cream", "Desserts", None, "x2 scoops with either - strawberry, chocolate or caramel sauce.", 5.0)
+
 if __name__ == "__main__":
-    seed_kids_menu()
+    seed_desserts()
     print("Entrees seeding completed.")
     session.close()
