@@ -12,10 +12,19 @@ class Drink(Base):
     name = Column(String, nullable=False)
     main_category = Column(String, nullable=False)
     sub_category = Column(String, nullable=True)
-    description = Column(String, nullable=True)  # Description of the drink
-    price_glass = Column(Float, nullable=True)  # Price per glass
-    price_bottle = Column(Float, nullable=True)  # Price per bottle
+    description = Column(String, nullable=True)  
+    price_glass = Column(Float, nullable=True)  
+    price_bottle = Column(Float, nullable=True) 
 
+class Food(Base):
+    __tablename__ = 'foods'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    main_category = Column(String, nullable=False)
+    sub_category = Column(String, nullable=True)
+    description = Column(String, nullable=True)  
+    price = Column(Float, nullable=False)  
 
 DATABASE_URL = "sqlite:///cario_nights.db"
 
