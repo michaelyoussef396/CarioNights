@@ -251,7 +251,15 @@ def seed_desserts():
     add_food("Baklava - 3 Pieces", "Desserts", None, "Middle Eastern sweets.", 11.0)
     add_food("Ice-Cream", "Desserts", None, "x2 scoops with either - strawberry, chocolate or caramel sauce.", 5.0)
 
+def delete_food_by_id_and_name(food_id, name):
+    food_item = session.query(Food).filter_by(id=food_id, name=name).first()
+    if food_item:
+        session.delete(food_item)
+        session.commit()
+        print(f"Food item with ID {food_id} and name '{name}' has been deleted.")
+    else:
+        print(f"No food item found with ID {food_id} and name '{name}'.")
+
 if __name__ == "__main__":
-    seed_desserts()
-    print("Entrees seeding completed.")
+    delete_food_by_id_and_name(50, "Om Ali (Mother of Ali)")
     session.close()
