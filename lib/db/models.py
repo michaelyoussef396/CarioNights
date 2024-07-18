@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -42,6 +42,16 @@ class ShishaFlavor(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     extra_price = Column(Float, nullable=False)
+
+# Define the RestaurantTable Table
+class RestaurantTable(Base):
+    __tablename__ = 'restaurant_tables'
+    
+    id = Column(Integer, primary_key=True)
+    location = Column(String, nullable=False)
+    table_number = Column(Integer, nullable=False)
+    capacity = Column(Integer, nullable=False)
+    is_available = Column(Boolean, default=True) 
 
 
 DATABASE_URL = "sqlite:///cario_nights.db"
