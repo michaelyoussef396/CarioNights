@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Drink, Food
+from models import Base, Drink, Food, ShishaHead, ShishaFlavor
 
 # Database setup
 DATABASE_URL = "sqlite:///cario_nights.db"
@@ -39,6 +39,7 @@ def add_food(name, main_category, sub_category=None, description=None, price=Non
         session.commit()
     else:
         print(f"Food {name} already exists. Skipping.")
+
 def seed_cold_drinks():
     # Juices
     add_drink("Mango Juice", "Cold Drinks", "Juices", "A refreshing tropical drink made from ripe mangoes.", 10.0)
@@ -260,6 +261,59 @@ def delete_food_by_id_and_name(food_id, name):
     else:
         print(f"No food item found with ID {food_id} and name '{name}'.")
 
+def seed_shisha():
+    # Shisha Heads
+    add_shisha_head("Clay Head", 45.0)
+    add_shisha_head("Premium Head", 50.0)
+    add_shisha_head("French Apple Head", 50.0)
+    
+    # Shisha Flavors
+    add_shisha_flavor("Lady Killer", None, 5.0)
+    add_shisha_flavor("Punkman", None, 5.0)
+    add_shisha_flavor("Godfather", None, 5.0)
+    add_shisha_flavor("Joker 777", None, 5.0)
+    add_shisha_flavor("Shiek Money", None, 5.0)
+    add_shisha_flavor("Love 66", None, 5.0)
+    add_shisha_flavor("Magic Love", None, 5.0)
+    add_shisha_flavor("Homer Simpson", None, 5.0)
+
+    add_shisha_flavor("Lady in Blue", "Contains Lady Killer, Love 66 and Blueberry", 5.0)
+    add_shisha_flavor("Blue Heaven", "Contains Blueberry with Gum Mint", 5.0)
+    add_shisha_flavor("Tropical Island", "Contains Kiwi with Gum Mint", 5.0)
+    add_shisha_flavor("Citrus King", "Contains Orange with Lemon and Mint", 5.0)
+    add_shisha_flavor("Fruit Fever", "Contains Apple, Kiwi, Gum Mint", 5.0)
+
+    add_shisha_flavor("Double Apple", None, 5.0)
+    add_shisha_flavor("Apple Mint", None, 5.0)
+    add_shisha_flavor("Grape with or without Mint", None, 5.0)
+    add_shisha_flavor("Blueberry with or without Mint", None, 5.0)
+    add_shisha_flavor("Kiwi with or without Mint", None, 5.0)
+    add_shisha_flavor("Watermelon with or without Mint", None, 5.0)
+    add_shisha_flavor("Peach with or without Mint", None, 5.0)
+    add_shisha_flavor("Lemon Mint", None, 5.0)
+    add_shisha_flavor("Orange with or without Mint", None, 5.0)
+    add_shisha_flavor("Gum Mint", None, 5.0)
+
+def add_shisha_head(head_type, price):
+    existing_shisha_head = session.query(ShishaHead).filter_by(head_type=head_type).first()
+    if existing_shisha_head is None:
+        shisha_head = ShishaHead(head_type=head_type, price=price)
+        session.add(shisha_head)
+        session.commit()
+    else:
+        print(f"Shisha head type {head_type} already exists. Skipping.")
+
+def add_shisha_flavor(name, description, extra_price):
+    existing_shisha_flavor = session.query(ShishaFlavor).filter_by(name=name).first()
+    if existing_shisha_flavor is None:
+        shisha_flavor = ShishaFlavor(name=name, description=description, extra_price=extra_price)
+        session.add(shisha_flavor)
+        session.commit()
+    else:
+        print(f"Flavor {name} already exists. Skipping.")
+
+# Add the seed function call to the main block if you want to execute it
 if __name__ == "__main__":
-    delete_food_by_id_and_name(50, "Om Ali (Mother of Ali)")
+    seed_shisha()
+    print("Shisha seeding completed.")
     session.close()
