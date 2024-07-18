@@ -43,7 +43,22 @@ class ShishaFlavor(Base):
     description = Column(String, nullable=True)
     extra_price = Column(Float, nullable=False)
 
-# Define the RestaurantTable Table
+# Define the Customer Table
+class Customer(Base):
+    __tablename__ = 'customers'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+
+# Define the Reservation Table
+class Reservation(Base):
+    __tablename__ = 'reservations'
+    
+    id = Column(Integer, primary_key=True)
+    customer_name = Column(String, nullable=False)
+    table_number = Column(Integer, ForeignKey('restaurant_tables.id'), nullable=False)
+
+# Define the Restaurant Table
 class RestaurantTable(Base):
     __tablename__ = 'restaurant_tables'
     
@@ -51,7 +66,7 @@ class RestaurantTable(Base):
     location = Column(String, nullable=False)
     table_number = Column(Integer, nullable=False)
     capacity = Column(Integer, nullable=False)
-    is_available = Column(Boolean, default=True) 
+    is_available = Column(Boolean, default=True)
 
 class RestaurantEmployee(Base):
     __tablename__ = 'restaurant_employees'
@@ -60,7 +75,7 @@ class RestaurantEmployee(Base):
     name = Column(String, nullable=False)
     role = Column(String, nullable=False)
     is_working = Column(Boolean, default=True)
-    
+
 DATABASE_URL = "sqlite:///cario_nights.db"
 
 engine = create_engine(DATABASE_URL)

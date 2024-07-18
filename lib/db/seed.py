@@ -311,48 +311,6 @@ def add_shisha_flavor(name, description, extra_price):
         session.commit()
     else:
         print(f"Flavor {name} already exists. Skipping.")
-def add_table(location, table_number, capacity, is_available=True):
-    existing_table = session.query(RestaurantTable).filter_by(location=location, table_number=table_number).first()
-    if existing_table is None:
-        table = RestaurantTable(
-            location=location,
-            table_number=table_number,
-            capacity=capacity,
-            is_available=is_available
-        )
-        session.add(table)
-        session.commit()
-    else:
-        print(f"Table {location} {table_number} already exists. Skipping.")
-
-def seed_tables():
-    # Indoor Tables
-    indoor_tables = [
-        (1, 6), (2, 4), (3, 6), (4, 2), (5, 8), (6, 2), (7, 4), 
-        (8, 0), (9, 0), (10, 4), (11, 4), (12, 4), (13, 2)
-    ]
-    
-    for table_number, capacity in indoor_tables:
-        add_table("Indoor", table_number, capacity, is_available=(capacity != 0))
-
-    # Terrace Tables
-    terrace_tables = [
-        (1, 0), (2, 2), (3, 2), (4, 3), (5, 5), (6, 2), (7, 2),
-        (8, 4), (9, 6), (10, 4), (11, 0), (12, 5), (13, 2), (14, 14, False),
-        (15, 4), (16, 4), (17, 2), (18, 4), (19, 6), (20, 4), (21, 4), (22, 2)
-    ]
-    
-    for table in terrace_tables:
-        if len(table) == 2:
-            table_number, capacity = table
-            add_table("Terrace", table_number, capacity, is_available=(capacity != 0))
-        elif len(table) == 3:
-            table_number, capacity, is_available = table
-            add_table("Terrace", table_number, capacity, is_available)
-
-    # Street Tables
-    for table_number in range(1, 13):
-        add_table("Street", table_number, 4)
 
 def add_employee(name, role, is_working=True):
     existing_employee = session.query(RestaurantEmployee).filter_by(name=name).first()
@@ -388,7 +346,47 @@ def seed_employees():
     add_employee("Fahim", "Shisha Guy")
     add_employee("Callum", "Shisha Guy")
 
+def add_table(location, table_number, capacity, is_available=True):
+    existing_table = session.query(RestaurantTable).filter_by(location=location, table_number=table_number).first()
+    if existing_table is None:
+        table = RestaurantTable(
+            location=location,
+            table_number=table_number,
+            capacity=capacity,
+            is_available=is_available
+        )
+        session.add(table)
+        session.commit()
+    else:
+        print(f"Table {location} {table_number} already exists. Skipping.")
+
+def seed_tables():
+    # Indoor Tables
+    indoor_tables = [
+        (1, 6), (2, 4), (3, 6), (4, 2), (5, 8), (6, 2), (7, 4), 
+        (8, 0), (9, 0), (10, 4), (11, 4), (12, 4), (13, 2)
+    ]
+    
+    for table_number, capacity in indoor_tables:
+        add_table("Indoor", table_number, capacity, is_available=(capacity != 0))
+
+    # Terrace Tables
+    terrace_tables = [
+        (1, 0, True), (2, 2, True), (3, 2, True), (4, 3, True), (5, 5, True), 
+        (6, 2, True), (7, 2, True), (8, 4, True), (9, 6, True), (10, 4, True), 
+        (11, 0, True), (12, 5, True), (13, 2, True), (14, 14, False),
+        (15, 4, True), (16, 4, True), (17, 2, True), (18, 4, True), (19, 6, True), 
+        (20, 4, True), (21, 4, True), (22, 2, True)
+    ]
+    
+    for table_number, capacity, is_available in terrace_tables:
+        add_table("Terrace", table_number, capacity, is_available=(capacity != 0))
+
+    # Street Tables
+    for table_number in range(1, 13):
+        add_table("Street", table_number, 4)
+
 if __name__ == "__main__":
-    seed_employees()
-    print("Employee seeding completed.")
+    seed_tables()
+    print("Table seeding completed.")
     session.close()
