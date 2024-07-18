@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Drink, Food, ShishaHead, ShishaFlavor, RestaurantTable
+from models import Base, Drink, Food, ShishaHead, ShishaFlavor, RestaurantTable, RestaurantEmployee
 
 # Database setup
 DATABASE_URL = "sqlite:///cario_nights.db"
@@ -354,7 +354,41 @@ def seed_tables():
     for table_number in range(1, 13):
         add_table("Street", table_number, 4)
 
+def add_employee(name, role, is_working=True):
+    existing_employee = session.query(RestaurantEmployee).filter_by(name=name).first()
+    if existing_employee is None:
+        employee = RestaurantEmployee(
+            name=name,
+            role=role,
+            is_working=is_working
+        )
+        session.add(employee)
+        session.commit()
+    else:
+        print(f"Employee {name} already exists. Skipping.")
+
+def seed_employees():
+    # Owners
+    add_employee("Sonny", "Owner")
+    add_employee("Jaqueline", "Owner")
+    add_employee("Tharwart", "Owner")
+
+    # Management
+    add_employee("Hossam", "Manager")
+    add_employee("Michael", "Team Supervisor")
+
+    # Workers
+    add_employee("Nardine", "Bartender")
+    add_employee("Soni", "Bartender")
+    add_employee("John", "Waiter")
+    add_employee("Laura", "Waiter")
+    add_employee("Sergio", "Bartender")
+    add_employee("Sharia", "Waiter")
+    add_employee("Fatin", "Waiter")
+    add_employee("Fahim", "Shisha Guy")
+    add_employee("Callum", "Shisha Guy")
+
 if __name__ == "__main__":
-    seed_tables()
-    print("Table seeding completed.")
+    seed_employees()
+    print("Employee seeding completed.")
     session.close()
