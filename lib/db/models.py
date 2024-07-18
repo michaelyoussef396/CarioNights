@@ -53,7 +53,14 @@ class RestaurantTable(Base):
     capacity = Column(Integer, nullable=False)
     is_available = Column(Boolean, default=True) 
 
-
+class RestaurantEmployee(Base):
+    __tablename__ = 'restaurant_employees'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    role = Column(String, nullable=False)
+    is_working = Column(Boolean, default=True)
+    
 DATABASE_URL = "sqlite:///cario_nights.db"
 
 engine = create_engine(DATABASE_URL)
