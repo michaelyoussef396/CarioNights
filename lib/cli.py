@@ -1,5 +1,5 @@
 import click
-from db.models import Base, Reservation, RestaurantTable, Customer, session
+from db.models import Base, Reservation, RestaurantTable, Customer, WaitingList, session
 import os
 
 def print_menu():
@@ -60,7 +60,19 @@ def reservation():
 
 def walk_in():
     click.echo("\nYou are here for a walk-in. Please wait to be seated.")
-    # Implement walk-in logic here
+    customer_name = input("Please enter your name: ")
+    num_people = int(input("Number of people: "))
+
+    # Add the walk-in to the waiting list
+    waiting = WaitingList(
+        customer_name=customer_name,
+        num_people=num_people
+    )
+    session.add(waiting)
+    session.commit()
+    click.echo(f"{customer_name}, you have been added to the waiting list for {num_people} people. Please wait to be seated.")
+    
+    session.close()
 
 def walking_back():
     click.echo("\nWelcome back! Please proceed to your table.")
