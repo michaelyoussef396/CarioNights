@@ -5,7 +5,6 @@ def print_message(message):
     print(message)
 
 def get_current_table_number():
-    # figure out a way to track it automatically
     return int(input("Enter your table number: "))
 
 def view_shisha_heads():
@@ -34,14 +33,12 @@ def order_shisha_head():
     if table_id is None:
         return
     
-    # Order the shisha head
     name = input("\nEnter the name of the Shisha Head you want to order: ")
     shisha_head = session.query(ShishaHead).filter(ShishaHead.head_type.ilike(f"%{name}%")).first()
     if not shisha_head:
         print("\nInvalid Shisha Head name. Please try again.")
         return
     
-    # Order the flavor
     flavor_name = input("\nEnter the name of the Shisha Flavor you want: ")
     flavor = session.query(ShishaFlavor).filter(ShishaFlavor.name.ilike(f"%{flavor_name}%")).first()
     if not flavor:
@@ -50,7 +47,6 @@ def order_shisha_head():
     
     quantity = int(input("Enter quantity: "))
     
-    # Create orders for both head and flavor
     head_order = Order(table_number=table_id, item_type='ShishaHead', item_id=shisha_head.id, quantity=quantity)
     flavor_order = Order(table_number=table_id, item_type='ShishaFlavor', item_id=flavor.id, quantity=quantity)
     session.add_all([head_order, flavor_order])
@@ -97,10 +93,7 @@ def give_feedback():
     customer_name = input("\nPlease enter your name: ")
     feedback_text = input("Please provide your feedback: ")
     
-    # Create a new Feedback object
     new_feedback = Feedback(customer_name=customer_name, feedback=feedback_text)
-    
-    # Add the new feedback to the session and commit
     session.add(new_feedback)
     session.commit()
     
@@ -129,11 +122,10 @@ def walk_in():
     customer_name = input("Please enter your name: ")
     num_people = int(input("Number of people: "))
     
-    # Add the walk-in to the waiting list
     waiting = WaitingList(
         customer_name=customer_name,
         num_people=num_people,
-        reason='Walk-in'  # Default reason for walk-in customers
+        reason='Walk-in'
     )
     session.add(waiting)
     session.commit()
@@ -147,15 +139,12 @@ def make_reservation():
     num_people = int(input("Number of people for the reservation: "))
     reservation_time = input("Reservation time (e.g., 7:00 PM): ")
 
-    # Check if a table is available
     available_table = session.query(RestaurantTable).filter_by(is_available=True).filter(RestaurantTable.capacity >= num_people).first()
 
     if available_table:
-        # Mark the table as reserved
         available_table.is_available = False
         session.add(available_table)
 
-        # Add the reservation to the database
         reservation = Reservation(
             customer_name=customer_name,
             table_number=available_table.id
@@ -249,7 +238,6 @@ def print_bill():
         if choice == '1':
             return
         elif choice == '2':
-            # Add to waiting list for payment
             waiting_list = WaitingList(customer_name=f"Table {table.table_number}", num_people=1, reason="Payment")
             session.add(waiting_list)
             session.commit()
@@ -258,3 +246,35 @@ def print_bill():
             return
         else:
             print("Invalid choice. Please try again.")
+
+def check_on_tables():
+    occupied_tables = session.query(RestaurantTable).filter_by(is_available=False).all()
+    if occupied_tables:
+        for table in occupied_tables:
+            click.echo(f"Table number {table.table_number} is occupied.")
+            response = input(f"Do you want to check on table number {table.table_number}? (yes/no): ")
+            if response.lower() == 'yes':
+                click.echo(f"Checked on table number {table.table_number}. The customers are satisfied.")
+    else:
+        click.echo("No occupied tables found.")
+
+def deliver_food():
+    table_number = input("Enter the table number to deliver food to: ")
+    orders = session.query(Order).filter_by(table_number=table_number, item_type='Food').all()
+    if orders:
+        click.echo(f"Food has been delivered to table number {table_number}.")
+        for order in orders:
+            food_item = session.query(Food).get(order.item_id)
+            click.echo(f"Delivered: {order.quantity} x {food_item.name}")
+    else:
+        click.echo(f"No food orders found for table number {table_number}.")
+
+def clean_table():
+    table_number = input("Enter the table number to clean: ")
+    table = session.query(RestaurantTable).filter_by(table_number=table_number).first()
+    if table:
+        table.is_available = True
+        session.commit()
+        click.echo(f"Table number {table_number} has been cleaned and is now available.")
+    else:
+        click.echo(f"No table found with number {table_number}.")
