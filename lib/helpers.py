@@ -1,4 +1,4 @@
-from db.models import Order, Reservation, RestaurantTable, ShishaFlavor, session, ShishaHead, Drink, Food, WaitingList, Feedback
+from db.models import Order, Reservation, RestaurantEmployee, RestaurantTable, ShishaFlavor, session, ShishaHead, Drink, Food, WaitingList, Feedback
 import click
 
 def print_message(message):
@@ -293,5 +293,51 @@ def view_all_orders():
         click.echo(f"Order ID: {order.id}, Table Number: {order.table_number}, Item Type: {order.item_type}, Item ID: {order.item_id}, Quantity: {order.quantity}")
     input("\nPress Enter to go back.")
 
+def add_employee():
+    name = input("Enter the name of the new employee: ")
+    role = input("Enter the role of the new employee (e.g., Waiter, Chef, Manager): ")
+    new_employee = RestaurantEmployee(name=name, role=role)
+    session.add(new_employee)
+    session.commit()
+    click.echo(f"Employee {name} added successfully with role {role}.")
+
+def remove_employee():
+    name = input("Enter the name of the employee to remove: ")
+    employee = session.query(RestaurantEmployee).filter_by(name=name).first()
+    if employee:
+        session.delete(employee)
+        session.commit()
+        click.echo(f"Employee {name} removed successfully.")
+    else:
+        click.echo(f"No employee found with name {name}.")
+
+def change_employee_role():
+    name = input("Enter the name of the employee whose role you want to change: ")
+    new_role = input(f"Enter the new role for {name}: ")
+    employee = session.query(RestaurantEmployee).filter_by(name=name).first()
+    if employee:
+        employee.role = new_role
+        session.commit()
+        click.echo(f"Employee {name}'s role changed to {new_role}.")
+    else:
+        click.echo(f"No employee found with name {name}.")
+
 def manage_employees():
-    click.echo("\nManage Employees options are under development. Please check back later.")
+    while True:
+        click.echo("\nManage Employees:")
+        click.echo("1. Add an employee")
+        click.echo("2. Remove an employee")
+        click.echo("3. Change an employee's role")
+        click.echo("4. Go back to the management menu")
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            add_employee()
+        elif choice == '2':
+            remove_employee()
+        elif choice == '3':
+            change_employee_role()
+        elif choice == '4':
+            return
+        else:
+            click.echo("\nInvalid choice, please select a valid option (1, 2, 3, or 4).")
