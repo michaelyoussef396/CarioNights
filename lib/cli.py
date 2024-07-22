@@ -4,8 +4,8 @@ from helpers import (
     order_item, print_bill, view_menu, make_reservation, walk_in, reservation, 
     view_shisha_heads, view_drinks, view_food, order_shisha_head, order_drink, 
     order_food, check_order_status, give_feedback, clean_table, check_on_tables,
-    deliver_food, view_all_reservations, view_all_orders, manage_employees, view_all_employees,
-    manage_menu
+    deliver_food, view_all_reservations, view_all_orders, manage_employees, manage_menu,
+    seat_walk_in, process_payment
 )
 
 def print_menu():
@@ -35,7 +35,9 @@ def management_menu():
         click.echo("2. View all orders")
         click.echo("3. Manage employees")
         click.echo("4. Manage menu items")
-        click.echo("5. Go back to the main menu")
+        click.echo("5. Seat walk-in from waiting list")
+        click.echo("6. Process table payment and free up table")
+        click.echo("7. Go back to the main menu")
         management_choice = input("Enter your choice: ")
 
         if management_choice == '1':
@@ -47,9 +49,13 @@ def management_menu():
         elif management_choice == '4':
             manage_menu()
         elif management_choice == '5':
+            seat_walk_in()
+        elif management_choice == '6':
+            process_payment()
+        elif management_choice == '7':
             return
         else:
-            click.echo("\nInvalid choice, please select a valid option (1, 2, 3, 4, or 5).")
+            click.echo("\nInvalid choice, please select a valid option (1, 2, 3, 4, 5, 6, or 7).")
 
 def management():
     if verify_management_access():

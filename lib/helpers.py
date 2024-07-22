@@ -454,3 +454,44 @@ def manage_menu():
             return
         else:
             click.echo("\nInvalid choice, please select a valid option (1, 2, 3, or 4).")
+
+def seat_walk_in():
+    waiting_list = session.query(WaitingList).filter_by(reason='Walk-in', status='Waiting').all()
+    if not waiting_list:
+        click.echo("No walk-ins waiting to be seated.")
+        return
+
+    for waiting in waiting_list:
+        click.echo(f"{waiting.customer_name}, party of {waiting.num_people}")
+        response = input(f"Do you want to seat {waiting.customer_name}? (yes/no): ")
+        if response.lower() == 'yes':
+            available_table = session.query(RestaurantTable).filter_by(is_available=True).filter(RestaurantTable.capacity >= waiting.num_people).first()
+            if available_table:
+                available_table.is_available = False
+                waiting.status = 'Seated'
+                session.commit()
+                click.echo(f"{waiting.customer_name} has been seated at table number {available_table.table_number}.")
+            else:
+                click.echo("No available table for this party size.")
+    session.close()
+
+def process_payment():
+    payment_requests = session.query(WaitingList).filter_by(reason='Payment', status='Waiting').all()
+    if not payment_requests:
+        click.echo("No tables waiting for payment.")
+        return
+
+    for payment in payment_requests:
+        click.echo(f"Table {payment.customer_name}")
+        response = input(f"Do you want to process payment for {payment.customer_name}? (yes/no): ")
+        if response.lower() == 'yes':
+            table_number = int(payment.customer_name.split()[-1])
+            table = session.query(RestaurantTable).filter_by(table_number=table_number).first()
+            if table:
+                table.is_available = True
+                payment.status = 'Completed'
+                session.commit()
+                click.echo(f"Payment processed and table number {table.table_number} is now available.")
+            else:
+                click.echo("Table not found.")
+    session.close()
