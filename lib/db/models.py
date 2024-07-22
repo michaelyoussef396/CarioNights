@@ -76,7 +76,15 @@ class RestaurantEmployee(Base):
     role = Column(String, nullable=False)
     is_working = Column(Boolean, default=True)
 
+# Define the Waiting List Table
+class WaitingList(Base):
+    __tablename__ = 'waiting_list'
+    
+    id = Column(Integer, primary_key=True)
+    customer_name = Column(String, nullable=False)
+    num_people = Column(Integer, nullable=False)
 
+    
 dirname = os.path.dirname(__file__)
 DATABASE_URL = f"sqlite:///{dirname}/cario_nights.db"
 engine = create_engine(DATABASE_URL)
