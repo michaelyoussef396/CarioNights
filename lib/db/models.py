@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-
+import os
 Base = declarative_base()
 
 # Define the Drinks Table
@@ -76,8 +76,9 @@ class RestaurantEmployee(Base):
     role = Column(String, nullable=False)
     is_working = Column(Boolean, default=True)
 
-DATABASE_URL = "sqlite:///cario_nights.db"
 
+dirname = os.path.dirname(__file__)
+DATABASE_URL = f"sqlite:///{dirname}/cario_nights.db"
 engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)

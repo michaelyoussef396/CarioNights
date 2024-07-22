@@ -1,13 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Drink, Food, ShishaHead, ShishaFlavor, RestaurantTable, RestaurantEmployee
+from models import Base, Drink, Food, ShishaHead, ShishaFlavor, RestaurantTable, RestaurantEmployee, session
 
-# Database setup
-DATABASE_URL = "sqlite:///cario_nights.db"
-
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
-session = Session()
 
 def add_drink(name, main_category, sub_category=None, description=None, price_glass=None, price_bottle=None):
     existing_drink = session.query(Drink).filter_by(name=name).first()
