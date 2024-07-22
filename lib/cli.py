@@ -1,7 +1,7 @@
 import click
 from db.models import Reservation, RestaurantTable, WaitingList, RestaurantEmployee, session
 from helpers import (
-    order_item, print_bill, view_menu, make_reservation, walk_in, reservation, 
+    manage_employees, order_item, print_bill, view_all_orders, view_all_reservations, view_menu, make_reservation, walk_in, reservation, 
     view_shisha_heads, view_drinks, view_food, order_shisha_head, order_drink, 
     order_food, check_order_status, give_feedback, clean_table, check_on_tables,
     deliver_food
@@ -17,35 +17,59 @@ def print_menu():
     click.echo("3. Customers")
     click.echo("4. Quit the application")
 
-def management():
-    click.echo("Management options are under development. Please check back later.")
-
-def employees():
+def verify_management_access():
     employee_name = input("Please enter your name: ")
     employee = session.query(RestaurantEmployee).filter_by(name=employee_name).first()
-    if employee:
-        click.echo(f"Welcome to work, {employee_name}!")
-        while True:
-            click.echo("\nEmployee options:")
-            click.echo("1. Clean a table")
-            click.echo("2. Check on occupied tables")
-            click.echo("3. Deliver food to a table")
-            click.echo("4. Go back to the main menu")
-            employee_choice = input("Enter your choice: ")
-
-            if employee_choice == '1':
-                clean_table()
-            elif employee_choice == '2':
-                check_on_tables()
-            elif employee_choice == '3':
-                deliver_food()
-            elif employee_choice == '4':
-                return
-            else:
-                click.echo("\nInvalid choice, please select a valid option (1, 2, 3, or 4).")
+    if employee and employee.role in ['Manager', 'Owner', 'Team Supervisor']:
+        click.echo(f"Welcome, {employee.name}! Access granted to the management menu.")
+        return True
     else:
-        click.echo("Employee not found. Please try again.")
-        employees()
+        click.echo("Access denied. You do not have the necessary permissions to access the management menu.")
+        return False
+
+def management_menu():
+    while True:
+        click.echo("\nManagement options:")
+        click.echo("1. View all reservations")
+        click.echo("2. View all orders")
+        click.echo("3. Manage employees")
+        click.echo("4. Go back to the main menu")
+        management_choice = input("Enter your choice: ")
+
+        if management_choice == '1':
+            view_all_reservations()
+        elif management_choice == '2':
+            view_all_orders()
+        elif management_choice == '3':
+            manage_employees()
+        elif management_choice == '4':
+            return
+        else:
+            click.echo("\nInvalid choice, please select a valid option (1, 2, 3, or 4).")
+
+def management():
+    if verify_management_access():
+        management_menu()
+
+def employees():
+    while True:
+        click.echo("\nEmployee options:")
+        click.echo("1. Clean a table")
+        click.echo("2. Check on occupied tables")
+        click.echo("3. Deliver food to a table")
+        click.echo("4. Go back to the main menu")
+        employee_choice = input("Enter your choice: ")
+
+        if employee_choice == '1':
+            clean_table()
+        elif employee_choice == '2':
+            check_on_tables()
+        elif employee_choice == '3':
+            deliver_food()
+        elif employee_choice == '4':
+            return
+        else:
+            click.echo("\nInvalid choice, please select a valid option (1, 2, 3, or 4).")
 
 def customers():
     click.echo("\nCustomer options:")

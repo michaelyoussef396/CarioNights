@@ -278,3 +278,20 @@ def clean_table():
         click.echo(f"Table number {table_number} has been cleaned and is now available.")
     else:
         click.echo(f"No table found with number {table_number}.")
+
+def view_all_reservations():
+    click.echo("\nAll Reservations:")
+    reservations = session.query(Reservation).all()
+    for reservation in reservations:
+        click.echo(f"Reservation ID: {reservation.id}, Customer Name: {reservation.customer_name}, Table Number: {reservation.table_number}")
+    input("\nPress Enter to go back.")
+
+def view_all_orders():
+    click.echo("\nAll Orders:")
+    orders = session.query(Order).all()
+    for order in orders:
+        click.echo(f"Order ID: {order.id}, Table Number: {order.table_number}, Item Type: {order.item_type}, Item ID: {order.item_id}, Quantity: {order.quantity}")
+    input("\nPress Enter to go back.")
+
+def manage_employees():
+    click.echo("\nManage Employees options are under development. Please check back later.")
