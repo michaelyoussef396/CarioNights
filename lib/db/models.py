@@ -65,7 +65,6 @@ class RestaurantTable(Base):
     is_available = Column(Boolean, default=True)
     
     orders = relationship("Order", back_populates="table")
-    payment_requests = relationship("PaymentRequest", back_populates="table")
     reservations = relationship("Reservation", back_populates="table")
 
 

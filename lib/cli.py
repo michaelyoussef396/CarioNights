@@ -1,9 +1,10 @@
 import click
-from db.models import Reservation, RestaurantTable, WaitingList, PaymentRequest, session
+from db.models import Reservation, RestaurantTable, WaitingList, RestaurantEmployee, session
 from helpers import (
     order_item, print_bill, view_menu, make_reservation, walk_in, reservation, 
     view_shisha_heads, view_drinks, view_food, order_shisha_head, order_drink, 
-    order_food, check_order_status, give_feedback
+    order_food, check_order_status, give_feedback, clean_table, check_on_tables,
+    deliver_food
 )
 
 def print_menu():
@@ -20,7 +21,31 @@ def management():
     click.echo("Management options are under development. Please check back later.")
 
 def employees():
-    click.echo("Employees options are under development. Please check back later.")
+    employee_name = input("Please enter your name: ")
+    employee = session.query(RestaurantEmployee).filter_by(name=employee_name).first()
+    if employee:
+        click.echo(f"Welcome to work, {employee_name}!")
+        while True:
+            click.echo("\nEmployee options:")
+            click.echo("1. Clean a table")
+            click.echo("2. Check on occupied tables")
+            click.echo("3. Deliver food to a table")
+            click.echo("4. Go back to the main menu")
+            employee_choice = input("Enter your choice: ")
+
+            if employee_choice == '1':
+                clean_table()
+            elif employee_choice == '2':
+                check_on_tables()
+            elif employee_choice == '3':
+                deliver_food()
+            elif employee_choice == '4':
+                return
+            else:
+                click.echo("\nInvalid choice, please select a valid option (1, 2, 3, or 4).")
+    else:
+        click.echo("Employee not found. Please try again.")
+        employees()
 
 def customers():
     click.echo("\nCustomer options:")
