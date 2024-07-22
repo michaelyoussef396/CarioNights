@@ -1,6 +1,10 @@
 import click
-from db.models import Base, Reservation, RestaurantTable, Customer, WaitingList, session
-import os
+from db.models import Reservation, RestaurantTable, WaitingList, PaymentRequest, session
+from helpers import (
+    order_item, print_bill, view_menu, make_reservation, walk_in, reservation, 
+    view_shisha_heads, view_drinks, view_food, order_shisha_head, order_drink, 
+    order_food, check_order_status, give_feedback
+)
 
 def print_menu():
     click.echo("Welcome to the Cario Nights Restaurant Management System")
@@ -41,69 +45,44 @@ def customers():
         click.echo("\nInvalid choice, please select a valid option (1, 2, 3, 4, or 5).")
         customers()
 
-def reservation():
+def walking_back():
     customer_name = input("Please enter your name: ")
     reservation = session.query(Reservation).filter_by(customer_name=customer_name).first()
     if reservation:
-        table = session.query(RestaurantTable).filter_by(id=reservation.table_number).first()
+        table = session.query(RestaurantTable).filter_by(id=reservation.table_number, is_available=False).first()
         if table:
-            if table.is_available or reservation.customer_name == customer_name:
-                table.is_available = False
-                session.commit()
-                click.echo(f"\nReservation found for {customer_name}. Please proceed to table number {table.table_number}.")
-            else:
-                click.echo(f"\nReservation found, but table number {reservation.table_number} is currently occupied by another reservation.")
+            click.echo(f"\nWelcome back, {customer_name}! Please proceed to your table number {table.table_number}.")
+            customer_interaction_menu()
         else:
-            click.echo(f"\nNo table found with number {reservation.table_number}.")
+            click.echo("\nNo occupied table found for your reservation. Please check with the reception.")
     else:
         click.echo("\nNo reservation found for your name. Please check with the reception.")
 
-def walk_in():
-    click.echo("\nYou are here for a walk-in. Please wait to be seated.")
-    customer_name = input("Please enter your name: ")
-    num_people = int(input("Number of people: "))
+def customer_interaction_menu():
+    while True:
+        click.echo("\nCustomer Interaction Menu:")
+        click.echo("1. View menu")
+        click.echo("2. Order item")
+        click.echo("3. Check order status")
+        click.echo("4. Give feedback")
+        click.echo("5. Print bill")
+        click.echo("6. Go back")
+        interaction_choice = input("Enter your choice: ")
 
-    # Add the walk-in to the waiting list
-    waiting = WaitingList(
-        customer_name=customer_name,
-        num_people=num_people
-    )
-    session.add(waiting)
-    session.commit()
-    click.echo(f"{customer_name}, you have been added to the waiting list for {num_people} people. Please wait to be seated.")
-    
-    session.close()
-
-def walking_back():
-    click.echo("\nWelcome back! Please proceed to your table.")
-    # Implement walking back logic here
-
-def make_reservation():
-    click.echo("\nMaking a reservation.")
-    customer_name = input("Please enter your name: ")
-    num_people = int(input("Number of people for the reservation: "))
-    reservation_time = input("Reservation time (e.g., 7:00 PM): ")
-
-    # Check if a table is available
-    available_table = session.query(RestaurantTable).filter_by(is_available=True).filter(RestaurantTable.capacity >= num_people).first()
-
-    if available_table:
-        # Mark the table as reserved
-        available_table.is_available = False
-        session.add(available_table)
-
-        # Add the reservation to the database
-        reservation = Reservation(
-            customer_name=customer_name,
-            table_number=available_table.id
-        )
-        session.add(reservation)
-        session.commit()
-        click.echo(f"Reservation made for {customer_name} for {num_people} people at {reservation_time}. Your table number is {available_table.table_number}.")
-    else:
-        click.echo("Sorry, no tables are available for the specified number of people.")
-    
-    session.close()
+        if interaction_choice == '1':
+            view_menu()
+        elif interaction_choice == '2':
+            order_item()
+        elif interaction_choice == '3':
+            check_order_status()
+        elif interaction_choice == '4':
+            give_feedback()
+        elif interaction_choice == '5':
+            print_bill()
+        elif interaction_choice == '6':
+            return
+        else:
+            click.echo("\nInvalid choice, please select a valid option (1, 2, 3, 4, 5, or 6).")
 
 def quit_app():
     click.echo("Thank you for using the Cario Nights Restaurant Management System. Goodbye!")

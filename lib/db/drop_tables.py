@@ -1,20 +1,16 @@
-from sqlalchemy import create_engine, MetaData
+from models import engine, Base
+from sqlalchemy import MetaData
 
-DATABASE_URL = "sqlite:///cario_nights.db"
-
-engine = create_engine(DATABASE_URL)
 meta = MetaData()
 
 # Reflect the tables
 meta.reflect(bind=engine)
 
 # Drop the tables if they exist
-if 'shisha' in meta.tables:
-    table = meta.tables['shisha']
-    table.drop(engine)
-    print("Dropped 'shisha' table.")
+tables_to_drop = ['waiting_list']
 
-if 'flavors' in meta.tables:
-    table = meta.tables['flavors']
-    table.drop(engine)
-    print("Dropped 'flavors' table.")
+for table_name in tables_to_drop:
+    if table_name in meta.tables:
+        table = meta.tables[table_name]
+        table.drop(engine)
+        print(f"Dropped '{table_name}' table.")
