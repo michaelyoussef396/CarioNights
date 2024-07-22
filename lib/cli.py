@@ -1,9 +1,6 @@
 import click
-
-from db.models import Base, Reservation, RestaurantTable, session
+from db.models import Base, Reservation, RestaurantTable, Customer, session
 import os
-
-
 
 def print_menu():
     click.echo("Welcome to the Cario Nights Restaurant Management System")
@@ -45,8 +42,21 @@ def customers():
         customers()
 
 def reservation():
-    click.echo("\nYou have a reservation. Please proceed to your table.")
-    # Implement reservation logic here
+    customer_name = input("Please enter your name: ")
+    reservation = session.query(Reservation).filter_by(customer_name=customer_name).first()
+    if reservation:
+        table = session.query(RestaurantTable).filter_by(id=reservation.table_number).first()
+        if table:
+            if table.is_available or reservation.customer_name == customer_name:
+                table.is_available = False
+                session.commit()
+                click.echo(f"\nReservation found for {customer_name}. Please proceed to table number {table.table_number}.")
+            else:
+                click.echo(f"\nReservation found, but table number {reservation.table_number} is currently occupied by another reservation.")
+        else:
+            click.echo(f"\nNo table found with number {reservation.table_number}.")
+    else:
+        click.echo("\nNo reservation found for your name. Please check with the reception.")
 
 def walk_in():
     click.echo("\nYou are here for a walk-in. Please wait to be seated.")
