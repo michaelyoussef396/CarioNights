@@ -293,6 +293,13 @@ def view_all_orders():
         click.echo(f"Order ID: {order.id}, Table Number: {order.table_number}, Item Type: {order.item_type}, Item ID: {order.item_id}, Quantity: {order.quantity}")
     input("\nPress Enter to go back.")
 
+def view_all_employees():
+    click.echo("\nAll Employees:")
+    employees = session.query(RestaurantEmployee).all()
+    for employee in employees:
+        click.echo(f"Employee ID: {employee.id}, Name: {employee.name}, Role: {employee.role}")
+    input("\nPress Enter to go back.")
+
 def add_employee():
     name = input("Enter the name of the new employee: ")
     role = input("Enter the role of the new employee (e.g., Waiter, Chef, Manager): ")
@@ -328,7 +335,8 @@ def manage_employees():
         click.echo("1. Add an employee")
         click.echo("2. Remove an employee")
         click.echo("3. Change an employee's role")
-        click.echo("4. Go back to the management menu")
+        click.echo("4. View all employees")
+        click.echo("5. Go back to the management menu")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -337,6 +345,111 @@ def manage_employees():
             remove_employee()
         elif choice == '3':
             change_employee_role()
+        elif choice == '4':
+            view_all_employees()
+        elif choice == '5':
+            return
+        else:
+            click.echo("\nInvalid choice, please select a valid option (1, 2, 3, 4, or 5).")
+
+def add_menu_item():
+    item_type = input("Enter the type of item (ShishaHead, Drink, Food): ")
+    if item_type == 'ShishaHead':
+        head_type = input("Enter the Shisha Head type: ")
+        price = float(input("Enter the price: "))
+        new_item = ShishaHead(head_type=head_type, price=price)
+    elif item_type == 'Drink':
+        name = input("Enter the drink name: ")
+        main_category = input("Enter the main category: ")
+        sub_category = input("Enter the sub category (optional): ")
+        description = input("Enter the description (optional): ")
+        price_glass = float(input("Enter the price per glass (optional, leave blank if not applicable): ") or 0)
+        price_bottle = float(input("Enter the price per bottle (optional, leave blank if not applicable): ") or 0)
+        new_item = Drink(name=name, main_category=main_category, sub_category=sub_category, description=description, price_glass=price_glass, price_bottle=price_bottle)
+    elif item_type == 'Food':
+        name = input("Enter the food name: ")
+        main_category = input("Enter the main category: ")
+        sub_category = input("Enter the sub category (optional): ")
+        description = input("Enter the description (optional): ")
+        price = float(input("Enter the price: "))
+        new_item = Food(name=name, main_category=main_category, sub_category=sub_category, description=description, price=price)
+    else:
+        click.echo("Invalid item type. Please enter ShishaHead, Drink, or Food.")
+        return
+    
+    session.add(new_item)
+    session.commit()
+    click.echo(f"{item_type} item added successfully.")
+
+def delete_menu_item():
+    item_type = input("Enter the type of item to delete (ShishaHead, Drink, Food): ")
+    item_id = int(input("Enter the ID of the item to delete: "))
+    
+    if item_type == 'ShishaHead':
+        item = session.query(ShishaHead).get(item_id)
+    elif item_type == 'Drink':
+        item = session.query(Drink).get(item_id)
+    elif item_type == 'Food':
+        item = session.query(Food).get(item_id)
+    else:
+        click.echo("Invalid item type. Please enter ShishaHead, Drink, or Food.")
+        return
+    
+    if item:
+        session.delete(item)
+        session.commit()
+        click.echo(f"{item_type} item deleted successfully.")
+    else:
+        click.echo(f"No {item_type} item found with ID {item_id}.")
+
+def update_menu_item():
+    item_type = input("Enter the type of item to update (ShishaHead, Drink, Food): ")
+    item_id = int(input("Enter the ID of the item to update: "))
+    
+    if item_type == 'ShishaHead':
+        item = session.query(ShishaHead).get(item_id)
+        if item:
+            item.head_type = input(f"Enter the new Shisha Head type (current: {item.head_type}): ") or item.head_type
+            item.price = float(input(f"Enter the new price (current: {item.price}): ") or item.price)
+    elif item_type == 'Drink':
+        item = session.query(Drink).get(item_id)
+        if item:
+            item.name = input(f"Enter the new drink name (current: {item.name}): ") or item.name
+            item.main_category = input(f"Enter the new main category (current: {item.main_category}): ") or item.main_category
+            item.sub_category = input(f"Enter the new sub category (current: {item.sub_category}): ") or item.sub_category
+            item.description = input(f"Enter the new description (current: {item.description}): ") or item.description
+            item.price_glass = float(input(f"Enter the new price per glass (current: {item.price_glass}): ") or item.price_glass)
+            item.price_bottle = float(input(f"Enter the new price per bottle (current: {item.price_bottle}): ") or item.price_bottle)
+    elif item_type == 'Food':
+        item = session.query(Food).get(item_id)
+        if item:
+            item.name = input(f"Enter the new food name (current: {item.name}): ") or item.name
+            item.main_category = input(f"Enter the new main category (current: {item.main_category}): ") or item.main_category
+            item.sub_category = input(f"Enter the new sub category (current: {item.sub_category}): ") or item.sub_category
+            item.description = input(f"Enter the new description (current: {item.description}): ") or item.description
+            item.price = float(input(f"Enter the new price (current: {item.price}): ") or item.price)
+    else:
+        click.echo("Invalid item type. Please enter ShishaHead, Drink, or Food.")
+        return
+    
+    session.commit()
+    click.echo(f"{item_type} item updated successfully.")
+
+def manage_menu():
+    while True:
+        click.echo("\nManage Menu Items:")
+        click.echo("1. Add a menu item")
+        click.echo("2. Delete a menu item")
+        click.echo("3. Update a menu item")
+        click.echo("4. Go back to the management menu")
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            add_menu_item()
+        elif choice == '2':
+            delete_menu_item()
+        elif choice == '3':
+            update_menu_item()
         elif choice == '4':
             return
         else:
